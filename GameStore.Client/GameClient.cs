@@ -30,7 +30,7 @@ public static class GameClient
     {
       ID = 3,
       Name = "Super Mario Bros.",
-      Genre = "Platformer",
+      Genre = "RolePlaying",
       ReleaseDate = new DateTime(1985, 9, 13),
       Price = 29.99M
     },
@@ -38,8 +38,16 @@ public static class GameClient
     {
       ID = 4,
       Name = "The Legend of Zelda",
-      Genre = "Action RPG",
+      Genre = "RolePlaying",
       ReleaseDate = new DateTime(1986, 2, 21),
+      Price = 39.99M
+    },
+    new Game()
+    {
+      ID = 5,
+      Name = "Fifa",
+      Genre = "Sports",
+      ReleaseDate = new DateTime(1999, 4, 21),
       Price = 39.99M
     }
   };
@@ -51,5 +59,17 @@ public static class GameClient
   {
     game.ID = games.Max(g => g.ID) + 1;
     games.Add(game);
+  }
+  public static Game GetGame(int id)
+  {
+    return games.FirstOrDefault(g => g.ID == id) ?? throw new ArgumentException("Could not find game.");
+  }
+  public static void UpdateGame(Game game)
+  {
+    Game existingGame = GetGame(game.ID);
+    existingGame.Name = game.Name;
+    existingGame.Genre = game.Genre;
+    existingGame.Price = game.Price;
+    existingGame.ReleaseDate = game.ReleaseDate;
   }
 }
