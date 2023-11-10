@@ -17,6 +17,8 @@
 }
 else
 {
+  <DeleteGame Game="@currentGame" OnClose="(accepted) => OnDeleteModalClose(accepted)" />
+
   <table class="table table=striped table-bordered table-hover">
     <thead class="table-dark">
       <th>ID</th>
@@ -40,6 +42,12 @@ else
             <button class="btn btn-primary" @onclick="()=> EditGame(game.ID)">
             <i class="oi oi-pencil"></i>
             </button>
+            <button class="btn btn-danger" 
+              data-bs-toggle="modal"
+              data-bs-target="#deleteModal"
+              @onclick="(()=> currentGame = game)">
+            <i class="oi oi-x"></i>
+            </button>
           </td>
         </tr>
       }
@@ -50,6 +58,7 @@ else
 
 @code {
   private Game[]? games;
+  private Game? currentGame;
 
   protected override void OnInitialized()
   {
@@ -63,5 +72,13 @@ else
   private void EditGame(int id)
   {
     NavigationManager.NavigateTo($"/game/{id}");
+  }
+  private void OnDeleteModalClose(bool accepted)
+  {
+    if(accepted)
+    {
+      GameClient.DeleteGame(currentGame!.ID);
+      games = GameClient.GetGames();
+    }
   }
 }
